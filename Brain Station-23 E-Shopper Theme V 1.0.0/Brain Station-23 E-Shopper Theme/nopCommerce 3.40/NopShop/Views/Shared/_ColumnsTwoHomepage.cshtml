@@ -1,0 +1,138 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+}
+
+@{
+    //current category ID
+    int currentCategoryId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("category", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentCategoryId = Convert.ToInt32(Url.RequestContext.RouteData.Values["categoryId"].ToString());
+    }
+
+
+    //current manufacturer ID
+    int currentManufacturerId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("manufacturer", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentManufacturerId = Convert.ToInt32(Url.RequestContext.RouteData.Values["manufacturerId"].ToString());
+    }
+
+
+    //current product ID
+    int currentProductId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("product", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentProductId = Convert.ToInt32(Url.RequestContext.RouteData.Values["productId"].ToString());
+    }
+}
+
+
+<section id="slider"><!--slider-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="slider-carousel" class="carousel slide" data-ride="carousel">
+						<ol class="carousel-indicators">
+							<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
+							<li data-target="#slider-carousel" data-slide-to="1"></li>
+							<li data-target="#slider-carousel" data-slide-to="2"></li>
+						</ol>
+						
+						<div class="carousel-inner">
+							<div class="item active">
+								<div class="col-sm-6">
+									<h1><span>E</span>-SHOPPER</h1>
+									<h2>Free E-Commerce Template</h2>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+									<button type="button" class="btn btn-primary get">Get it now</button>
+								</div>
+								<div class="col-sm-6">
+									<img src="~/Themes/NopShop/Content/css/images/home/girl1.jpg" class="girl img-responsive" alt="" />
+									<img src="~/Themes/NopShop/Content/css/images/home/pricing.png"  class="pricing" alt="" />
+								</div>
+							</div>
+							<div class="item">
+								<div class="col-sm-6">
+									<h1><span>E</span>-SHOPPER</h1>
+									<h2>100% Responsive Design</h2>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+									<button type="button" class="btn btn-primary get">Get it now</button>
+								</div>
+								<div class="col-sm-6">
+									<img src="~/Themes/NopShop/Content/css/images/home/girl2.jpg" class="girl img-responsive" alt="" />
+									<img src="~/Themes/NopShop/Content/css/images/home/pricing.png"  class="pricing" alt="" />
+								</div>
+							</div>
+							
+							<div class="item">
+								<div class="col-sm-6">
+									<h1><span>E</span>-SHOPPER</h1>
+									<h2>Free Ecommerce Template</h2>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+									<button type="button" class="btn btn-primary get">Get it now</button>
+								</div>
+								<div class="col-sm-6">
+									<img src="~/Themes/NopShop/Content/css/images/home/girl3.jpg" class="girl img-responsive" alt="" />
+									<img src="~/Themes/NopShop/Content/css/images/home/pricing.png" class="pricing" alt="" />
+								</div>
+							</div>
+							
+						</div>
+						
+						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+							<i class="fa fa-angle-left"></i>
+						</a>
+						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+							<i class="fa fa-angle-right"></i>
+						</a>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</section><!--/slider-->
+
+@*<div class="container silde-show-container">
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.Widget("home_page_top")
+        </div>
+    
+    </div>
+</div>*@
+<div class="space15px"></div>
+<div class="container">
+    <div class="row">
+        
+        <div class="col-lg-3 col-md-4 col-sm-4 hidden-xs">
+            <div class="left-sidebar">
+                @if (IsSectionDefined("left"))
+                {
+                    @RenderSection("left")
+                }
+                else
+                {
+                    
+                    @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId })
+                    @Html.Action("ManufacturerNavigation", "Catalog", new { currentManufacturerId = currentManufacturerId })
+                    @Html.Action("RecentlyViewedProductsBlock", "Product", new { productThumbPictureSize = 32 })    
+                    @Html.Action("PopularProductTags", "Catalog")
+                    @Html.Action("PollBlock", "Poll", new { systemKeyword = "LeftColumnPoll" })
+                    
+                }
+            </div>
+
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 padding-right">
+            @Html.Widget("main_column_before")
+            @RenderBody()
+            @Html.Widget("main_column_after")
+        </div>
+                
+    </div>
+</div>
+

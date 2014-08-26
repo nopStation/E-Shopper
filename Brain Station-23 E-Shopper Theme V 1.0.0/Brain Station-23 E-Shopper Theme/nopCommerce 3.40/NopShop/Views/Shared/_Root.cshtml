@@ -1,0 +1,41 @@
+﻿
+@*@Html.Action("BsMenu", "BsMenu", new {area = ""})*@
+@{
+    Layout = "~/Views/Shared/_Root.Head.cshtml";
+    
+}
+@Html.Widget("body_start_html_tag_after")
+@*@Html.Partial("_Notifications")*@
+<div >
+    @Html.Action("JavaScriptDisabledWarning", "Common")
+    <div >
+        <script type="text/javascript">
+            AjaxCart.init(false, '.cart-qty', '.wishlist-qty', '#flyout-cart');
+        </script>
+        
+        @*ajax loading window*@
+        <div class="ajax-loading-block-window" style="display: block">
+            <div class="loading-image">
+            </div>
+        </div>
+
+        <div>
+            
+
+            <header id="header"><!--header-->
+                @Html.Partial("TopHeader")<!--/header_top-->
+		        @Html.Partial("Header")<!--/header-middle-->
+                @Html.Action("TopMenu", "Catalog")<!--/header-bottom-->
+  
+            </header>
+
+            @Html.Widget("content_before")
+
+            @RenderBody()
+        </div>
+        @Html.Widget("content_after")
+        @Html.Action("EuCookieLaw", "Common")
+    </div> 
+    @Html.Action("Footer", "Common")
+</div>
+@Html.Widget("body_end_html_tag_before")

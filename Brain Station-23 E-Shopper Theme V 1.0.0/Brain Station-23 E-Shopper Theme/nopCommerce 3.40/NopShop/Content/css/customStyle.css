@@ -1,0 +1,168 @@
+﻿
+
+/*------------------------------------*\
+  background and indentation view start
+\*------------------------------------*/
+
+
+
+.bk-orange {
+    background-color: orange;
+    color:white;
+}
+
+.margin-orange {
+    margin-left: 15px;
+}
+
+.form-control:hover {
+  box-shadow: inherit;
+  border-color: #FDB45E;
+}
+
+.form-control:focus {
+  box-shadow: inherit;
+  border-color: #FDB45E;
+}
+
+/*------------------------------------*\
+   background and indentation view End
+\*------------------------------------*/
+
+
+
+
+/*------------------------------------*\
+   FOR BOXING TEXT START
+\*------------------------------------*/
+.box {
+    margin-left:15px;
+    margin-right:10px;
+}
+
+.custom-box-div {
+    border: 1px solid #F7F7F0;
+    padding: 15px;
+    
+    margin-bottom: 35px;
+
+}
+
+
+/*------------------------------------*\
+   FOR BOXING TEXT END
+\*------------------------------------*/
+
+
+
+/*------------------------------------*\
+   TABLE HEADING START
+\*------------------------------------*/
+.tbl {
+    border-bottom:none;
+    background-color:#FE980F;
+    height:40px;
+    vertical-align:inherit;
+    font-size:16px;
+    color:white;
+    font-weight:normal;
+}
+
+/* quantity*/
+.quan {
+    width:60px;
+    box-sizing:border-box;
+    text-align:center;
+    border-radius:0px;
+}
+
+/* sku*/
+.sku {
+    width:100px;
+    text-align:center;
+    border-radius:0px;
+    margin-top:50%;
+    border-style:none;
+    outline:none;
+    box-shadow:none;
+    border-color:none;
+}
+/*cart price total*/
+.crt-total {
+    color:#FE980F;
+    font-size:24px;
+}
+
+
+/*table row line*/
+.border-row {
+	border-bottom: 1px solid #ccc;
+}
+
+.table-box {
+    
+    border-top: 1px solid #ccc;    
+    margin-bottom: 35px;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+
+}
+
+.txthvr:hover {
+    border:1px solid #FE980F;
+}
+
+
+/*for label arrow*/
+.lower-arrow::after{    
+    content: "";
+    position: absolute;
+    width: auto;
+    height: auto;
+    border-style: solid;
+    border-width: 8px;
+    border-color: #FE980F transparent transparent transparent;
+    top: 25px;
+    left: 5px;
+    margin-left:10px;
+    margin-top:10px;
+}
+
+/* label width*/
+.lable-width {
+    width: 26px;
+}
+
+.color-orange {
+    background-color:#FE980F;
+    color:white;
+}
+
+.invisible-box{
+     
+  margin-bottom: 35px;
+
+}
+
+.no-padding-left {
+    padding-left: 0px;
+}
+
+.pad-left {
+    padding-left:10px;
+}
+
+
+/*one page chk out heading*/
+.pad-top {
+    padding-top:10px;
+}
+
+
+/* square border*/
+.bdr-radius {
+    border-radius:0px;
+}
+/*------------------------------------*\
+   TABLE HEADING END
+\*------------------------------------*/

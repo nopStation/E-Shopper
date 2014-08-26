@@ -1,0 +1,74 @@
+﻿@model WishlistEmailAFriendModel
+@using Nop.Web.Models.ShoppingCart;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.WishlistEmailAFriend").Text);
+}
+
+<div class="features_items my-account-page"><!--features_items-->
+    <h2 class="title text-center">@T("Wishlist.EmailAFriend.Title")</h2>
+    <div class="custom-page-box-div">
+        @if (Model.SuccessfullySent)
+        {
+            <div class="result alert alert-success">
+                @Model.Result
+            </div>
+        }
+        else
+        {
+            using (Html.BeginForm())
+            {
+            <div class="message-error">
+                @Html.ValidationSummary(true)
+            </div>
+            <div class="form-fields">
+                <div class="">
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.FriendEmail, new { @class = "col-md-2" }, ":")
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.FriendEmail, new { @class = "gray-input", placeholder = T("Wishlist.EmailAFriend.FriendEmail.Hint") })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ValidationMessageFor(model => model.FriendEmail)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.YourEmailAddress, new { @class = "col-md-2" }, ":")
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.YourEmailAddress, new { @class = "gray-input", placeholder = T("Wishlist.EmailAFriend.YourEmailAddress.Hint") })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ValidationMessageFor(model => model.YourEmailAddress)
+                        </div>
+                    </div>
+                    @if (Model.DisplayCaptcha)
+                    {
+                        <div class="captcha-box">
+                            @Html.Raw(Html.GenerateCaptcha())
+                        </div>
+                    }
+                </div>
+                <div class="inputs-right">
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.PersonalMessage, new { @class = "col-md-2 " }, ":")
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.PersonalMessage, new { @class = "gray-input", placeholder = T("Wishlist.EmailAFriend.PersonalMessage.Hint"), rows = "7" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ValidationMessageFor(model => model.PersonalMessage)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <input type="submit" name="send-email" class="button-1 btn btn-primary" value="@T("Wishlist.EmailAFriend.Button")" />
+            </div>
+            }
+        }
+    </div>
+</div>
+
+
+

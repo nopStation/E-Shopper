@@ -1,0 +1,111 @@
+﻿
+<div class="header_top"><!--header_top-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="contactinfo">
+                    <ul class="nav nav-pills">
+                        <li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
+                        <li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="social-icons pull-right">
+                    <ul class="nav navbar-nav">
+                        <li><a href="http://www.facebook.com/nopCommerce" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="https://twitter.com/nopCommerce" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="http://www.linkedin.com/groups/nopCommerce-3305256" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="https://dribbble.com/" target="_blank"><i class="fa fa-dribbble"></i></a></li>
+                        <li><a href="https://plus.google.com/+nopcommerce" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="theme-color-picker">
+    <div id="configure-button" class="configure-button" data-expanded="false">
+        <a href="#"><i class="fa fa-cog fa-2x"></i></a>
+        
+    </div>
+    <div class="color-options" id="color-options">
+        <h3>Preset Color</h3>
+        <div class="options-choosing-palette">
+            <ul>
+                <li><a href="#" rel="blue" class="styleswitch blue-picker"><img src="~/Themes/NopShop/Content/css/images/blue-picker.png"/></a></li>
+                <li><a href="#" rel="red" class="styleswitch red-picker"><img src="~/Themes/NopShop/Content/css/images/red-picker.png"/></a></li>
+                <li><a href="#" rel="darkblue" class="styleswitch darkblue-picker"><img src="~/Themes/NopShop/Content/css/images/darkblue-picker.png"/></a></li>
+            
+            
+
+            </ul>
+            <ul>
+                
+                <li><a href="#" rel="orange" class="styleswitch orange-picker"><img src="~/Themes/NopShop/Content/css/images/orange-picker.png"/></a></li>
+                <li><a href="#" rel="cyan" class="styleswitch cyan-picker"><img src="~/Themes/NopShop/Content/css/images/cyan-picker.png"/></a></li>
+                <li><a href="#" rel="green" class="styleswitch green-picker"><img src="~/Themes/NopShop/Content/css/images/green-picker.png"/></a></li>
+
+            </ul>
+        </div>
+
+        
+
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+	$(function()
+		{
+			// Call stylesheet init so that all stylesheet changing functions 
+			// will work.
+			$.stylesheetInit();
+			
+			// This code loops through the stylesheets when you click the link with 
+			// an ID of "toggler" below.
+			$('#toggler').bind(
+				'click',
+				function(e)
+				{
+					$.stylesheetToggle();
+					return false;
+				}
+			);
+			
+			// When one of the styleswitch links is clicked then switch the stylesheet to
+			// the one matching the value of that links rel attribute.
+			$('.styleswitch').bind(
+				'click',
+				function(e)
+				{
+					$.stylesheetSwitch(this.getAttribute('rel'));
+					return false;
+				}
+			);
+
+
+			$("#configure-button").on("click", function (e) {
+			    e.preventDefault();
+	        if ($(this).data("expanded") == "true") {
+	            $("#color-options").css({ right: '-200px' });
+	            $("#configure-button").css({ right: '0px' });
+	            $(this).data("expanded","false");
+	        } else {
+	            $("#color-options").css({ right: '0px' });
+	            $("#configure-button").css({ right: '200px' });
+	            $(this).data("expanded", "true");
+	        }
+	        
+	    });
+
+
+		}
+	);
+	</script>

@@ -1,0 +1,106 @@
+﻿@model CatalogPagingFilteringModel.SpecificationFilterModel
+@using Nop.Web.Models.Catalog;
+@{
+    var notFilteredItemsGroups = Model.NotFilteredItems.GroupBy(x => x.SpecificationAttributeName);
+}
+@if (Model.Enabled)
+{
+    if (Model.NotFilteredItems.Count > 0)
+    {
+
+        <h2>@T("Filtering.SpecificationFilter")</h2>
+
+        
+            
+
+
+
+
+            <div class="panel-group category-products" id="accordian">
+                @{
+                    var new_i = 0;
+                }
+                @foreach (var group in notFilteredItemsGroups)
+                {
+                    var groupList = group.ToList();
+
+                    <div class="panel panel-default">
+                        
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordian" href="#filter-accordion-@new_i">
+                                    @groupList[0].SpecificationAttributeName
+                                    <i class="fa fa-plus pull-right "></i>
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="filter-accordion-@new_i" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <ul>
+                                    @foreach (var spec in groupList)
+                                    {
+                                        <li><a href="@spec.FilterUrl">@spec.SpecificationAttributeOptionName
+                                                
+                                            </a></li>
+
+                                    }
+                                
+                                
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        
+                    </div>
+                    new_i++;
+                }
+        
+            
+
+
+        </div>
+    }
+    if (Model.AlreadyFilteredItems.Count > 0)
+        {
+            <h2>@T("Filtering.SpecificationFilter.CurrentlyFilteredBy")</h2>
+            <div class="panel-group category-products" >
+                @foreach (var item in Model.AlreadyFilteredItems)
+                {
+                    <div class="panel panel-default">
+                        
+
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="@item.FilterUrl">@(item.SpecificationAttributeName): @item.SpecificationAttributeOptionName<i class="fa fa-check pull-right"></i></a>
+                            </h4>
+                        </div>
+                        
+                
+
+                        
+                    </div>
+                }
+                <div class="panel panel-default">
+                        
+
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a href="@Model.RemoveFilterUrl">@T("Filtering.SpecificationFilter.Remove")<i class="fa fa-times pull-right"></i></a>
+                        </h4>
+                    </div>
+                        
+                
+
+                        
+                </div>
+            </div>
+
+
+
+        }
+
+    
+}
+

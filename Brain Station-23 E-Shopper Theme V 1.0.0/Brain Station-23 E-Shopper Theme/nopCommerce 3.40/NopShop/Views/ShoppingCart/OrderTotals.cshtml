@@ -1,0 +1,178 @@
+﻿@model OrderTotalsModel
+@using Nop.Web.Models.ShoppingCart;
+
+
+
+<div class="total_area">
+    <ul>
+        <li>@T("ShoppingCart.Totals.SubTotal"): <span>@Model.SubTotal</span></li>
+        @if (!String.IsNullOrEmpty(Model.SubTotalDiscount))
+        {
+            <li>
+                
+                @T("ShoppingCart.Totals.SubTotalDiscount")
+                @if (Model.AllowRemovingSubTotalDiscount)
+                {
+                    /*empty value (little hack for FormValueExistsAttribute)*/
+                    <input type="submit" name="removesubtotaldiscount" value=" " title="@T("Common.Remove")" class="remove-discount-button" />
+                }
+                : 
+                
+                <span >@Model.SubTotalDiscount</span> 
+                
+            </li>
+
+        }
+        <li>
+                
+            @T("ShoppingCart.Totals.Shipping"):
+            @if (Model.RequiresShipping && !String.IsNullOrEmpty(Model.SelectedShippingMethod))
+            {
+                        
+                @T("ShoppingCart.Totals.Shipping.Method", Model.SelectedShippingMethod)
+                       
+            }
+                
+            <span>
+                    
+                @if (Model.RequiresShipping)
+                {
+                    if (!String.IsNullOrEmpty(Model.Shipping))
+                    {
+                        @Model.Shipping
+                            
+                    }
+                    else
+                    {
+                        @T("ShoppingCart.Totals.CalculatedDuringCheckout")
+                    }
+                }
+                else
+                {
+                    @T("ShoppingCart.Totals.Shipping.NotRequired")
+                }
+                    
+            </span>
+        </li>
+
+        @if (!String.IsNullOrEmpty(Model.PaymentMethodAdditionalFee))
+        {
+            <li>
+                
+                @T("ShoppingCart.Totals.PaymentMethodAdditionalFee"):
+                
+                
+                <span >@Model.PaymentMethodAdditionalFee
+                </span>
+                
+            </li>
+        }
+        @if (Model.DisplayTaxRates && Model.TaxRates.Count > 0)
+        {
+            foreach (var taxRate in Model.TaxRates)
+            {
+                <li>
+                    
+                    @string.Format(T("ShoppingCart.Totals.TaxRateLine").Text, taxRate.Rate)
+                    :
+                    
+                    <span >
+                        @taxRate.Value
+                    </span>
+                    
+                </li>
+            }
+        }
+        @if (Model.DisplayTax)
+        {
+            <li>
+                
+                @T("ShoppingCart.Totals.Tax"): 
+                
+                
+                <span>@Model.Tax</span> 
+                
+            </li>
+        }
+        @if (!String.IsNullOrEmpty(Model.OrderTotalDiscount))
+        {
+            <li>
+                
+                @T("ShoppingCart.Totals.OrderTotalDiscount")
+                @if (Model.AllowRemovingOrderTotalDiscount)
+                {
+                    /*empty value (little hack for FormValueExistsAttribute)*/
+                    <input type="submit" name="removeordertotaldiscount" value=" " title="@T("Common.Remove")" class="remove-discount-button" />
+                }
+                : 
+                
+                <span>@Model.OrderTotalDiscount</span> 
+                
+            </li>
+        }
+        @if (Model.GiftCards.Count > 0)
+        {
+            foreach (var gc in Model.GiftCards)
+            {
+                <li>
+                    
+                    @T("ShoppingCart.Totals.GiftCardInfo", gc.CouponCode)
+                    @if (Model.IsEditable)
+                    {
+                        //little hack here with empty "value" element
+                        <input type="submit" name="removegiftcard-@gc.Id" value=" " title="@T("Common.Remove")" class="remove-gift-card-button" />
+                    }
+                    : 
+                    
+                    <span >@gc.Amount</span> 
+                    
+                </li>
+                <li>
+                   
+                    <span> @string.Format(T("ShoppingCart.Totals.GiftCardInfo.Remaining").Text, gc.Remaining)</span>
+                                          
+                    
+                </li>
+            }
+        }
+        @if (Model.RedeemedRewardPoints > 0)
+        {
+            <li>
+                
+                    
+                @string.Format(T("ShoppingCart.Totals.RewardPoints").Text, Model.RedeemedRewardPoints):
+                
+                
+                <span >@Model.RedeemedRewardPointsAmount</span>
+                    
+                
+            </li>
+        }
+
+        <li>
+                
+            <b>@T("ShoppingCart.Totals.OrderTotal"):</b>
+               
+                
+            <span ><b>
+                @if (!String.IsNullOrEmpty(Model.OrderTotal))
+                {
+                    @Model.OrderTotal
+                }
+                else
+                {
+                    @T("ShoppingCart.Totals.CalculatedDuringCheckout")
+                }</b>
+            </span>
+                
+        </li>
+    </ul>
+    
+</div>
+
+
+
+
+
+
+<div class="clearfix"></div>

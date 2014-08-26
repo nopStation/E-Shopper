@@ -1,0 +1,259 @@
+﻿@model ManufacturerModel
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var manufacturerUrl = Url.RouteUrl("Manufacturer", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(manufacturerUrl);
+    }
+}
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Extensions;
+
+
+<div class="features_items"><!--features_items-->
+    <h2 class="title text-center">@Model.Name</h2>
+    
+        @if (!String.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div class="custom-page-box-div">
+                <div class="manufacturer-description">
+                    @Html.Raw(Model.Description)
+                </div>
+            </div>
+
+        }
+    
+    <div class="custom-page-box-border-less-div">
+        <div class="row">
+            <div class="col-md-12">
+                                      
+            
+                <div class="product-selectors clearfix">
+                   
+
+                            
+                    @*view mode*@
+                    @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
+                    {
+                        <div class="col-md-4 pull-text-center ">
+                            <div class="row filtering-navigation-item filtering-navigation-item-one">
+                                <div class="col-md-5 remove_right_padding">
+                                   
+                                    <div class="breadcrumbs pull-right">
+                                        <ol class="breadcrumb">
+                                            <li><a>@T("Catalog.ViewMode")</a></li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+																			
+
+																			
+
+
+                                <div class="col-md-6 remove_left_padding form-two text-left">
+                                    <form class="pull-left">@Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { @class = "", onchange = "setLocation(this.value);" })</form>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @*sorting*@
+                    @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
+                    {
+                        <div class="col-md-4 pull-text-center">
+                            <div class="row  filtering-navigation-item filtering-navigation-item-two">
+                                <div class="col-md-5 remove_right_padding">
+                                    <div class="breadcrumbs pull-right">
+                                        <ol class="breadcrumb">
+                                            <li><a>@T("Catalog.OrderBy")</a></li>
+                                        </ol>
+                                    </div>
+                                </div>
+
+
+                                
+
+                                <div class="col-md-8 remove_left_padding form-two">
+                                    <form class="pull-left">@Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { @class = "", onchange = "setLocation(this.value);" })</form>
+                                </div>
+                            </div>                  
+                        </div>
+                    }
+                    @*page size*@
+                    @if (Model.PagingFilteringContext.AllowCustomersToSelectPageSize && Model.Products.Count > 0)
+                    {
+                        <div class="col-md-4 pull-text-center">
+                            <div class="row filtering-navigation-item filtering-navigation-item-three">
+                                
+                                <div class="col-md-6 remove_right_padding ">
+                                    <div class="breadcrumbs pull-right">
+                                        <ol class="breadcrumb">
+                                            <li><a>@T("Catalog.PageSize") @T("Catalog.PageSize.PerPage")</a></li>
+                                        </ol>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-md-5 remove_left_padding remove_right_padding form-two customed-form-two pull-right">
+                                    <form class="pull-left">@Html.DropDownList("products-pagesize", Model.PagingFilteringContext.PageSizeOptions, new { @class = "", onchange = "setLocation(this.value);" })</form>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    }
+                </div>
+                       
+
+
+            </div>
+                    
+        </div>
+        <div class="clearfix space15px"></div>
+            @*product list*@
+            @if (Model.Products.Count > 0)
+            {
+                if (Model.PagingFilteringContext.ViewMode == "list")
+                {
+                     @*list mode*@
+                    <div class="product-list">
+                    
+                        @foreach (var product in Model.Products)
+                        {
+                            <div class="row">
+                            
+                        
+                                <div class="col-md-12">
+                                    <div class="offer offer-default">
+                                        @Html.Partial("_ProductBox", product)
+                                    </div>
+                                </div>
+                            </div>
+
+                        
+                        }
+                    </div>       
+                }
+                else
+                {
+                    @*grid mode*@
+
+                    <div class="product-grid home-page-product-grid">
+                        <div class="row ">
+                    
+                            @foreach (var product in Model.Products)
+                            {
+
+                                <div class="col-md-4">
+                                    <div class="offer offer-default silde-show-offer pull-text-center">
+                                        @Html.Partial("_ProductBox", product)
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+
+                
+                }
+            }
+            <div class="pagination-area">
+                <div class="pagination">
+                    @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+                </div>
+           
+            </div>
+        </div>
+
+
+    
+</div>
+@section left
+{
+    <div class="product-filters-wrapper">
+        @*filtering*@
+        @if (Model.PagingFilteringContext.PriceRangeFilter.Enabled)
+        {
+            @Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())
+        }
+                
+                
+    </div>
+
+}
+
+
+
+
+    @*featured products*@
+    @if (Model.FeaturedProducts.Count > 0)
+    {
+
+
+        var best_i = 0;
+        <div class="recommended_items"><!--recommended_items-->
+            <h2 class="title text-center">@T("Products.FeaturedProducts")</h2>
+						
+            <div id="recommended-item-carousel-2" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach (var item in Model.FeaturedProducts)
+                    {
+                        if (best_i%3 == 0)
+                        {
+                            if (best_i == 0)
+                            {
+                                @:<div class="item active">
+                                @:<div class="row" >    
+                            }
+                            else
+                            {
+                                @:<div class="item">
+                                @:<div class="row" >  
+                            }
+
+
+
+
+                        }
+                        <div class="col-lg-4">
+                            <div class="offer offer-default silde-show-offer pull-text-center">
+                                @Html.Partial("_ProductBox", item)
+                            </div>
+
+                        </div>
+
+
+                        if (best_i%3 == 2)
+                        {
+                            @:</div> 
+                            @:</div> 
+                        }
+                        best_i++;
+                    }
+                    @if (best_i%3 != 0)
+                    {
+                        @:</div> 
+                        @:</div> 
+                    }
+                
+                </div>
+                <a class="left recommended-item-control" href="#recommended-item-carousel-2" data-slide="prev">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <a class="right recommended-item-control" href="#recommended-item-carousel-2" data-slide="next">
+                    <i class="fa fa-angle-right"></i>
+                </a>			
+            </div>
+        </div>
+
+
+
+    }

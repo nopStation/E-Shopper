@@ -1,0 +1,176 @@
+﻿@model ProductDetailsModel
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title, meta
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var productUrl = Url.RouteUrl("Product", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(productUrl);
+    }
+}
+<!--product breadcrumb-->
+
+@Html.Partial("_ProductBreadcrumb", Model.Breadcrumb)
+
+
+
+<div class="features_items"><!--features_items-->
+    <h2 class="title text-center">@Model.Name</h2>
+
+    
+    <div class="product-details">
+        @using (Html.BeginRouteForm("Product", new { SeName = Model.SeName }, FormMethod.Post, new { id = "product-details-form" }))
+        {
+            <div itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
+                <div class="row product-essential">
+                    @Html.Widget("productdetails_before_pictures")
+                    <!--product pictures-->
+                    
+
+                    <div class="col-md-5">
+                        @Html.Partial("_ProductDetailsPictures", Model)
+                        @Html.Widget("productdetails_after_pictures")
+                    </div>
+
+                    <div class="col-md-7 overview ">
+                        <div class="product-information">
+                            @if (!String.IsNullOrEmpty(Model.ShortDescription))
+                            {
+                                <div class="short-description">
+                                    @Html.Raw(Model.ShortDescription)
+                                </div><br/>
+                            }
+                            <!--product reviews-->
+                           @Html.Partial("_ProductReviewOverview", Model.ProductReviewOverview)
+                            <!--price & add to cart-->
+                            @{
+                                var dataDictPrice = new ViewDataDictionary();
+                                dataDictPrice.TemplateInfo.HtmlFieldPrefix = string.Format("price_{0}", Model.Id);
+                                @Html.Partial("_ProductPrice", Model.ProductPrice, dataDictPrice)
+                            
+                                var dataDictAddToCart = new ViewDataDictionary();
+                                dataDictAddToCart.TemplateInfo.HtmlFieldPrefix = string.Format("addtocart_{0}", Model.Id);
+                                @Html.Partial("_AddToCart", Model.AddToCart, dataDictAddToCart)                    
+                            }
+                            <!--product SKU, manufacturer part number, stock info-->
+                            @Html.Partial("_SKU_Man_Stock", Model)
+                            <!--Back in stock subscription-->
+                            @Html.Partial("_BackInStockSubscription", Model)
+                            <!--product manufacturers-->
+                            @Html.Partial("_ProductManufacturers", Model.ProductManufacturers)
+                        
+                            <!--sample download-->
+                            @Html.Partial("_DownloadSample", Model)
+                            
+                            
+                            <!--attributes-->
+                            @{
+                                var dataDictAttributes = new ViewDataDictionary();
+                                dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
+                                @Html.Partial("_ProductAttributes", Model.ProductVariantAttributes, dataDictAttributes)                  
+                            }
+                            <!--gift card-->
+                            @{
+                                var dataDictGiftCard = new ViewDataDictionary();
+                                dataDictGiftCard.TemplateInfo.HtmlFieldPrefix = string.Format("giftcard_{0}", Model.Id);
+                                @Html.Partial("_GiftCardInfo", Model.GiftCard, dataDictGiftCard)
+                            }
+                            <div class= "form-group row">
+                                @Html.Partial("_ProductEmailAFriendButton", Model)
+
+                                @Html.Partial("_CompareProductsButton", Model)
+                            </div>
+                             @Html.Partial("_ShareButton", Model)
+
+                             @Html.Partial("_ProductTierPrices", Model.TierPrices)
+                        </div>
+
+                        
+                       
+                    </div>
+
+
+                    
+
+                    
+                </div>
+                <div class="row">
+                    <div class="category-tab shop-details-tab"><!--category-tab-->
+                        <div class="col-sm-12">
+                            <ul class="nav nav-tabs">
+                                @if (!String.IsNullOrEmpty(Model.FullDescription))
+                                {
+                          
+                                    <li class="active"><a href="#description" data-toggle="tab">Description</a></li>
+                                }
+                                @if (!String.IsNullOrEmpty(@Html.Partial("_ProductSpecifications", Model.ProductSpecifications).ToString()))
+                                {
+
+                                    <li><a href="#specification" data-toggle="tab">Specifications</a></li>
+                                }
+                                @if (!String.IsNullOrEmpty(@Html.Partial("_ProductTags", Model.ProductTags).ToString()))
+                                {
+                                    <li><a href="#tags" data-toggle="tab">Products Tags</a></li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            @if (!String.IsNullOrEmpty(Model.FullDescription))
+                            {
+                                <div class="full-description tab-pane fade active in" id="description" itemprop="description">
+                                    <div class="custom-page-box-border-less-div">
+                                        @Html.Raw(Model.FullDescription)
+                                    </div>
+                                        
+                                    </div>
+
+                            }
+                            <div class="full-description fade tab-pane" id="specification">
+                                <div class="custom-page-box-border-less-div">
+                                    @Html.Partial("_ProductSpecifications", Model.ProductSpecifications)
+                                </div>
+
+                                
+                            </div>
+
+                            <div class="full-description fade tab-pane" id="tags">
+                                <div class="custom-page-box-border-less-div">
+                                    @Html.Partial("_ProductTags", Model.ProductTags)
+                                </div>
+                                
+                            </div>
+
+                            
+							
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                
+                
+            </div>
+
+        }
+    </div>
+						
+</div>
+
+
+
+<div class="product-collateral">
+    
+     @Html.Action("ProductsAlsoPurchased", "Product", new { productId = Model.Id })
+    @Html.Action("RelatedProducts", "Product", new { productId = Model.Id })
+</div>

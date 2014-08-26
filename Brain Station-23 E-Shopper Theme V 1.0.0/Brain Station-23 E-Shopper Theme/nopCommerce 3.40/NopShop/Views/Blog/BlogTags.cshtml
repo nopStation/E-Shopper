@@ -1,0 +1,33 @@
+﻿@model BlogPostTagListModel
+@using Nop.Web.Models.Blogs
+@if (Model.Tags.Count > 0)
+{
+
+    <div class="brands_products"><!--features_items-->
+        <h2>@T("Blog.TagCloud")</h2>
+        <div class="custom-side-box-div">
+            
+            @foreach (var item in Model.Tags)
+            {
+                    
+                    
+                <a href="@Url.RouteUrl("BlogByTag", new { tag = item.Name })" style="font-size:@(Model.GetFontSize(item))%;">@item.Name</a>
+                    
+
+                    
+            }
+            @*@if (Model.TotalTags > Model.Tags.Count)
+            {
+                <div class="view-all">
+                    <a href="@Url.RouteUrl("ProductTagsAll")" class="btn btn-primary">@T("Products.Tags.Popular.ViewAll")</a>
+                </div>
+            }*@	
+        </div>
+        
+        
+					
+    </div>
+
+
+
+}

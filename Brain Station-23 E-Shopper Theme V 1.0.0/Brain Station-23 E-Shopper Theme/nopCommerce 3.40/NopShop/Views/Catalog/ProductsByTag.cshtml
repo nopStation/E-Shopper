@@ -1,0 +1,159 @@
+﻿@model ProductsByTagModel
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(string.Format(T("PageTitle.ProductsByTag").Text, Model.TagName));
+}
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Extensions;
+
+<div class="features_items"><!--features_items-->
+    <h2 class="title text-center">@String.Format(T("Products.Tags.ProductsTaggedWith").Text, Model.TagName)</h2>
+    <div class="custom-page-box-border-less-div">
+         <div class="row">
+            <div class="col-md-12">
+                                      
+            
+                <div class="product-selectors clearfix">
+                   
+
+                            
+                    @*view mode*@
+                    @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
+                    {
+                        <div class="col-md-4 pull-text-center ">
+                            <div class="row filtering-navigation-item filtering-navigation-item-one">
+                                <div class="col-md-5 remove_right_padding">
+                                   
+                                    <div class="breadcrumbs pull-right">
+                                        <ol class="breadcrumb">
+                                            <li><a>@T("Catalog.ViewMode")</a></li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+																			
+
+																			
+
+
+                                <div class="col-md-6 remove_left_padding form-two text-left">
+                                    <form class="pull-left">@Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { @class = "", onchange = "setLocation(this.value);" })</form>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @*sorting*@
+                    @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
+                    {
+                        <div class="col-md-4 pull-text-center">
+                            <div class="row  filtering-navigation-item filtering-navigation-item-two">
+                                <div class="col-md-5 remove_right_padding">
+                                    <div class="breadcrumbs pull-right">
+                                        <ol class="breadcrumb">
+                                            <li><a>@T("Catalog.OrderBy")</a></li>
+                                        </ol>
+                                    </div>
+                                </div>
+
+
+                                
+
+                                <div class="col-md-8 remove_left_padding form-two">
+                                    <form class="pull-left">@Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { @class = "", onchange = "setLocation(this.value);" })</form>
+                                </div>
+                            </div>                  
+                        </div>
+                    }
+                    @*page size*@
+                    @if (Model.PagingFilteringContext.AllowCustomersToSelectPageSize && Model.Products.Count > 0)
+                    {
+                        <div class="col-md-4 pull-text-center">
+                            <div class="row filtering-navigation-item filtering-navigation-item-three">
+                                
+                                <div class="col-md-6 remove_right_padding ">
+                                    <div class="breadcrumbs pull-right">
+                                        <ol class="breadcrumb">
+                                            <li><a>@T("Catalog.PageSize") @T("Catalog.PageSize.PerPage")</a></li>
+                                        </ol>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-md-5 remove_left_padding remove_right_padding form-two customed-form-two pull-right">
+                                    <form class="pull-left">@Html.DropDownList("products-pagesize", Model.PagingFilteringContext.PageSizeOptions, new { @class = "", onchange = "setLocation(this.value);" })</form>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    }
+                </div>
+                       
+
+
+            </div>
+                    
+        </div>
+        <div class="clearfix space15px"></div>
+        @if (Model.Products.Count > 0)
+        {
+            if (Model.PagingFilteringContext.ViewMode == "list")
+            {
+                     @*list mode*@
+                <div class="product-list">
+                    
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="row">
+                            
+                        
+                            <div class="col-md-12">
+                                <div class="offer offer-default">
+                                    @Html.Partial("_ProductBox", product)
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    }
+                </div>       
+            }
+            else
+            {
+                    @*grid mode*@
+
+                <div class="product-grid home-page-product-grid">
+                    <div class="row ">
+                    
+                        @foreach (var product in Model.Products)
+                        {
+
+                            <div class="col-md-4">
+                                <div class="offer offer-default silde-show-offer pull-text-center">
+                                    @Html.Partial("_ProductBox", product)
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+
+                
+            }
+        }
+        <div class="pagination-area">
+            <div class="pagination">
+                @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+            </div>
+           
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
