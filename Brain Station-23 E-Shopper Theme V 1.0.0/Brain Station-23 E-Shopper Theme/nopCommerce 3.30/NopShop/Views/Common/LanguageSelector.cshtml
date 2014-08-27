@@ -1,0 +1,79 @@
+﻿@model LanguageSelectorModel
+@using Nop.Web.Models.Common;
+@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@if (Model.AvailableLanguages.Count > 1)
+{
+    var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+
+    if (Model.UseImages)
+    {
+        
+
+
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
+                @foreach (var lang in Model.AvailableLanguages)
+                {
+                    if(lang.Id == Model.CurrentLanguageId)
+                    {
+                        <img  src="@Url.Content("~/Content/Images/flags/" + @lang.FlagImageFileName) " />
+                    }
+                
+                } 
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" >
+        
+                @foreach (var lang in Model.AvailableLanguages)
+                {
+                    <li><a href="@webHelper.ModifyQueryString(Url.RouteUrl("ChangeLanguage", new { langid = lang.Id }), "returnurl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl), null)" title="@lang.Name">
+                            <img title='@lang.Name' alt='@lang.Name' @(lang.Id == Model.CurrentLanguageId ? " class=selected" : null)
+                                 src="@Url.Content("~/Content/Images/flags/" + @lang.FlagImageFileName) " />
+                        </a></li>
+                }    
+
+            </ul>
+
+        </div>
+
+    
+    }
+    else
+    {
+        var languages = Model.AvailableLanguages.Select(lang => new SelectListItem
+        {
+            Text = lang.Name,
+            Value = webHelper.ModifyQueryString(Url.RouteUrl("ChangeLanguage", new { langid = lang.Id }), "returnurl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl), null),
+            Selected = lang.Id.Equals(Model.CurrentLanguageId)
+        });
+    
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
+                @foreach(var just_language in languages)
+                {
+                    if(just_language.Selected==true)
+                    {
+                        @just_language.Text
+                    }
+                }
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" >
+        
+                @foreach(var language in languages)
+                {
+                    <li><a href="@language.Value" >@language.Text</a></li>
+            
+                }     
+
+            </ul>
+
+        </div>
+
+        
+
+    }
+}
+

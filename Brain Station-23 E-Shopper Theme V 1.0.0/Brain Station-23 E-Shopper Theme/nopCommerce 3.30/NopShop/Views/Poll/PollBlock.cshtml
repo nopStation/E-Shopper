@@ -1,0 +1,13 @@
+﻿@model PollModel
+@using Nop.Web.Models.Polls;
+
+<div class="brands_products"><!--brands_products-->
+    <h2>@T("Polls.Title")</h2>
+    <div class="brands-name">
+        <div class="custom-page-box-border-less-div">
+            @Html.Partial("_Poll", Model)    
+        </div>
+        
+    </div>
+</div>
+

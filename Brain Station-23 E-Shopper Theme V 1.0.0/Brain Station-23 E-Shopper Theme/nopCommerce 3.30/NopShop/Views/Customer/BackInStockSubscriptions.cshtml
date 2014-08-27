@@ -1,0 +1,119 @@
+﻿@model CustomerBackInStockSubscriptionsModel
+@using Nop.Web.Extensions;
+@using Nop.Web.Models.Customer;
+@{    
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    Html.AddTitleParts(T("PageTitle.BackInStockSubscriptions").Text);
+}
+@section left
+{
+    @Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
+}
+
+
+<div class="features_items my-account-page"><!--features_items-->
+    <h2 class="title text-center">@T("Account.MyAccount") - @T("Account.BackInStockSubscriptions")</h2>
+    <div class="custom-page-box-div">
+        @if (Model.Subscriptions.Count > 0)
+        {
+            <div class="description">
+                @T("Account.BackInStockSubscriptions.Description")
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                    $('#selectall').click(function () {
+                        $('.subscription-list .rowcheckbox').attr('checked', $(this).is(':checked')).change();
+                    });
+
+                    $('.subscription-list .rowcheckbox').on('change', function (e) {
+                        var numChkBoxes = $('.subscription-list .rowcheckbox').length;
+                        var numChkBoxesChecked = $('.subscription-list .rowcheckbox:checked').length;
+                        $('#selectall').attr('checked', numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
+                    });
+                });
+            </script>        
+            using (Html.BeginRouteForm("CustomerBackInStockSubscriptions", FormMethod.Post))
+            {
+                <div class="subscription-list">
+                    <div id="cart_items">
+    
+
+                        <div class="table-responsive cart_info">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr class="cart_menu">
+                                        <td class="a-center select-boxes">
+                                            <input type="checkbox" id="selectall" />
+                                        </td>
+                                        <td class="a-center product">
+                                            @T("Account.BackInStockSubscriptions.ProductColumn")
+                                        </td>
+
+                
+                                    </tr>
+
+
+
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Subscriptions.Count; i++)
+                                    {
+                                        var item = Model.Subscriptions[i];
+                                        <tr @(i%2 == 0 ? Html.Raw(" class=\"odd\"") : Html.Raw(" class=\"even\""))>
+                                            <td class="a-center select-boxes">
+                                                <input type="checkbox" name="biss@(item.Id)" class="rowcheckbox" />
+                                            </td>
+                                            <td class="a-left product">
+                                                @Html.RouteLink(item.ProductName, "Product", new {SeName = item.SeName})
+                                            </td>
+                                        </tr>
+                                    }
+            
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="space15px"></div>
+                    <div class="pagination-area">
+                        <div class="pagination">
+                            @Html.Pager(Model.PagerModel)
+                        </div>
+           
+                    </div>
+
+
+
+                        
+                    <div class="buttons">
+                        <input type="submit" value="@T("Account.BackInStockSubscriptions.DeleteSelected")" class="button-2 btn btn-primary" />
+                    </div>
+
+                        
+
+                        
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-danger square-box">
+                @T("Account.BackInStockSubscriptions.NoSubscriptions")
+            </div>
+        }
+        
+
+
+
+
+
+        
+        
+    </div>
+</div>
+
+
+
+

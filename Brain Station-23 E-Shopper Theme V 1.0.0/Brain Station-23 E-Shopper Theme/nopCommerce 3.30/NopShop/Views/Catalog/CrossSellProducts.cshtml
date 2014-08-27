@@ -1,0 +1,68 @@
+﻿@model IList<ProductOverviewModel>
+@using Nop.Web.Models.Catalog;
+
+
+
+
+@if (Model.Count > 0)
+{
+
+    var best_i = 0;
+    <div class="recommended_items"><!--recommended_items-->
+        <h2 class="title text-center">@T("ShoppingCart.CrossSells")</h2>
+						
+        <div id="recommended-item-carousel-2" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @foreach (var item in Model)
+                {
+                    if(best_i%4==0)
+                    {
+                        if(best_i==0)
+                        {
+                            @:<div class="item active">
+                            @:<div class="row" >    
+                        }else
+                        {
+                            @:<div class="item">
+                                @:<div class="row" >  
+                        }
+                        
+
+                            
+
+                    }
+                    <div class="col-lg-3">
+                        <div class="offer offer-default silde-show-offer pull-text-center">
+                            @Html.Partial("_ProductBox", item)
+                        </div>
+
+                    </div>
+
+
+                    if(best_i%4==3)
+                    {
+                        @:</div> 
+                        @:</div> 
+                    }
+                    best_i++;
+                }
+                @if(best_i%4!=0)
+                {
+                    @:</div> 
+                    @:</div> 
+                }
+                
+            </div>
+            <a class="left recommended-item-control" href="#recommended-item-carousel-2" data-slide="prev">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            <a class="right recommended-item-control" href="#recommended-item-carousel-2" data-slide="next">
+                <i class="fa fa-angle-right"></i>
+            </a>			
+        </div>
+    </div>
+
+
+    
+
+}

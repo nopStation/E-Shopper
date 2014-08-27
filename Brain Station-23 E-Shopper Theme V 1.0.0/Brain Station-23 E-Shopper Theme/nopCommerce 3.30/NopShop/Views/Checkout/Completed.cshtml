@@ -1,0 +1,71 @@
+﻿@model CheckoutCompletedModel
+@using Nop.Web.Models.Checkout;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+}
+@if (!Model.OnePageCheckoutEnabled)
+            {
+                @Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.Complete })
+            }
+<div class="container">
+    <h2 class="title text-center">@T("Checkout.ThankYou")</h2>
+    <div class="custom-page-box-div">
+        <div class="row">
+            
+                
+
+
+
+            <div class="col-lg-12 cart-box-wr">
+                    
+
+                <div class="coupon-box offer offer-default">
+                            
+                    <div class="title"><strong>@T("Checkout.YourOrderHasBeenSuccessfullyProcessed")</strong></div>
+                    <div class="hint">
+                        <div>
+                            @T("Checkout.OrderNumber"): @Model.OrderId
+                        </div>
+                        <br/>
+
+
+                        
+
+
+                        <div class="row">
+                            <div class="col-lg-3 pull-left">
+                                <a class="btn btn-primary " href="@Url.RouteUrl("OrderDetails", new { orderID = Model.OrderId })">@T("Checkout.PlacedOrderDetails")</a>
+
+                            </div>
+                            <div class="col-lg-3 pull-right pull-text-right">
+                                <input type="button" value="@T("Checkout.ThankYou.Continue")" class="btn btn-primary" onclick="setLocation('@Url.RouteUrl("HomePage")')" />
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+                    </div>
+
+
+
+                            
+                </div>
+
+                                             
+                    
+                    
+            </div>
+  
+            
+            
+        </div>
+    </div>
+</div>
+

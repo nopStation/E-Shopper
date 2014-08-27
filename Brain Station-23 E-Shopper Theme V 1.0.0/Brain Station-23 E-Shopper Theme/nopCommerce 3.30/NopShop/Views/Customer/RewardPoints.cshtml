@@ -1,0 +1,95 @@
+﻿@model CustomerRewardPointsModel
+@using Nop.Web.Models.Customer;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+}
+@section left
+{
+    @Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
+}
+
+
+<div class="features_items my-account-page"><!--features_items-->
+    <h2 class="title text-center">@T("Account.MyAccount") - @T("Account.RewardPoints")</h2>
+    <div class="custom-page-box-div">
+        <div class="reward-points-overview">
+            <div class="current-balance">@T("RewardPoints.CurrentBalance", Model.RewardPointsBalance, Model.RewardPointsAmount)</div>
+            @if (Model.MinimumRewardPointsBalance > 0)
+            {
+                <div class="min-balance">@T("RewardPoints.MinimumBalance", Model.MinimumRewardPointsBalance, Model.MinimumRewardPointsAmount)</div>
+            }
+        </div>
+        <div class="space15px"></div>
+        <div class="reward-points-history">
+            <div class="title">
+                <strong>@T("RewardPoints.History")</strong>
+            </div>
+            <legend></legend>
+            @if (Model.RewardPoints.Count > 0)
+            {
+
+                <div id="cart_items">
+    
+
+                    <div class="table-responsive cart_info">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr class="cart_menu">
+                                    <td class="a-center date">
+                                        @T("RewardPoints.Fields.Date")
+                                    </td>
+                                    <td class="a-center points">
+                                        @T("RewardPoints.Fields.Points")
+                                    </td>
+                                    <td class="a-center points-balance">
+                                        @T("RewardPoints.Fields.PointsBalance")
+                                    </td>
+                                    <td class="a-center message">
+                                        @T("RewardPoints.Fields.Message")
+                                    </td>
+                
+                                </tr>
+
+
+
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.RewardPoints.Count; i++)
+                                {
+                                    var item = Model.RewardPoints[i];
+                                    <tr @(i % 2 == 0 ? Html.Raw(" class=\"odd\"") : Html.Raw(" class=\"even\""))>
+                                        <td class="a-center date">
+                                            @item.CreatedOn
+                                        </td>
+                                        <td class="a-center points">
+                                            @item.Points
+                                        </td>
+                                        <td class="a-center points-balance">
+                                            @item.PointsBalance
+                                        </td>
+                                        <td class="a-left message">
+                                            @item.Message
+                                        </td>
+                                    </tr>
+                                }
+            
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                    
+            }
+            else
+            {
+                @T("RewardPoints.NoHistory")
+            }
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,69 @@
+﻿@model BoardsIndexModel
+@using Nop.Web.Models.Boards;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    Html.AddTitleParts(T("Forum.PageTitle.Default").Text);
+}
+
+<div class="container">
+    <div class="bg">
+        
+        <div class="row">
+            <div class="col-sm-12 ">
+                @Html.Action("TopicBlock", "Topic", new { systemName = "ForumWelcomeMessage" })
+
+            </div> 
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="container blog-post-area boards-date-box">
+    <div class=" single-blog-post">
+        <div class="custom-page-box-div">
+            <div class="row">                
+                <div class="post-meta" >
+                    <ul class="list-inline">									
+                        <li><i class="fa fa-clock-o"></i> @Model.CurrentTime.ToString("T")</li>
+                        <li><i class="fa fa-calendar"></i> @Model.CurrentTime.ToString("D")</li>
+                    </ul>
+								
+                </div>
+                <div class="col-md-offset-5 col-md-3 pull-right">
+                    @Html.Partial("_SearchBox")
+                </div>
+            </div>    
+        </div>
+            
+    </div>
+</div>
+
+<div class="row clearfix space10"></div>
+
+
+
+<div class="container">
+    <div class="custom-page-box-border-less-div">
+        <div class="row">
+            <div class="col-md-12">
+                @foreach (var forumGroup in Model.ForumGroups)
+                {
+                    Html.RenderPartial("_ForumGroup", forumGroup);
+                }
+                @Html.Action("ActiveDiscussionsSmall")
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

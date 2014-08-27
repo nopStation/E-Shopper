@@ -1,0 +1,114 @@
+﻿@model BlogPostListModel
+@using Nop.Web.Extensions;
+@using Nop.Web.Models.Blogs;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Blog").Text);
+}
+@section left {
+    @Html.Action("BlogMonths", "Blog")
+    @Html.Action("BlogTags", "Blog")
+}
+
+
+<div class="features_items custom-blog-page"><!--features_items-->
+    <h2 class="title text-center">
+        @if (String.IsNullOrEmpty(Model.PagingFilteringContext.Tag))
+            {
+                if (Model.PagingFilteringContext.GetParsedMonth().HasValue)
+                {
+                    @String.Format(T("Blog.FilteredByMonth").Text, Model.PagingFilteringContext.GetParsedMonth().Value.Year, Model.PagingFilteringContext.GetParsedMonth().Value.ToString("MMMM"))
+                }
+                else
+                {
+                    @T("Blog")
+                    <a href="@Url.RouteUrl("BlogRSS", new { languageId = Model.WorkingLanguageId })" class=" margin-orange header-rss" title="@T("Blog.RSS.Hint")"><i class="fa fa-rss header-rss-icon"></i></a>
+
+                }
+            }
+            else
+            {
+                @String.Format(T("Blog.TaggedWith").Text, Model.PagingFilteringContext.Tag)
+            }
+    </h2>
+
+    
+    <div class="product-details">
+        <div class="custom-page-box-div">
+            @foreach (var item in Model.BlogPosts)
+            {
+                <div class=" single-blog-post">
+                    
+                
+                    <div class="blog-post-area">
+                        <div class="row">
+                            <div class="col-md-8 pull-text-left">
+                                <h4><a class="post-title" href="@Url.RouteUrl("BlogPost", new {SeName = item.SeName})">@item.Title</a></h4>
+                            </div>
+                        </div>
+                        <div class="post-meta" >
+                            <ul class="list-inline">
+									
+                                <li><i class="fa fa-clock-o"></i> @item.CreatedOn.ToString("T")</li>
+                                <li><i class="fa fa-calendar"></i>@item.CreatedOn.ToString("D")</li>
+                            </ul>
+								
+                        </div>
+                    </div>
+
+
+
+
+                    <p>@Html.Raw(item.Body)</p>
+                    <div class="rating-area">
+                        @if (item.Tags.Count > 0)
+                    {
+                        <div class="tag pull-right">
+                            <label><strong>@T("Blog.Tags"):</strong></label>
+                           
+                            @for (int i = 0; i < item.Tags.Count; i++)
+                            {
+                                var tag = item.Tags[i];
+                                <a class="color"  href="@Url.RouteUrl("BlogByTag", new { tag = tag })">@tag</a>
+                                if (i != item.Tags.Count - 1)
+                                {
+                                    <span class="separator">/</span>
+                                }
+                            }
+                            
+                        </div>
+                    }
+                    @if (item.AllowComments)
+                    {
+                        <div class="blog-details">
+                            <a  href="@Url.RouteUrl("BlogPost", new { SeName = item.SeName })">
+                                <strong> @string.Format(T("Blog.CommentsLink").Text, item.NumberOfComments)</strong>
+                            </a>
+                        </div>
+                    }
+                    </div>
+                    
+
+                </div>
+
+            }
+            <div class="pagination-area">
+                <div class="pagination">
+                     @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+                </div>
+           
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+
+
+

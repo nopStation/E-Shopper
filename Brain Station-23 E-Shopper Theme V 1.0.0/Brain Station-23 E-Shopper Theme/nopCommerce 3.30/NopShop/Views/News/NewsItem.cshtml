@@ -1,0 +1,161 @@
+﻿@model NewsItemModel
+@using Nop.Web.Models.News;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+}
+<div class="features_items custom-blog-page"><!--features_items-->
+    <h2 class="title text-center">@Model.Title</h2>
+
+    
+    <div class="product-details">
+        <div class="custom-page-box-div">
+            <div class="post-meta">
+                <ul class="sinlge-post-meta">
+                            
+                    <li><i class="fa fa-clock-o"></i> @Model.CreatedOn.ToString("T")</li>
+                    <li><i class="fa fa-calendar"></i> @Model.CreatedOn.ToString("D")</li>
+                </ul>
+                        
+            </div>
+
+                    
+            <p>@Html.Raw(Model.Full)</p>
+
+            @if (Model.AllowComments)
+            {
+                <div class="">
+                    
+                    <div class="news-comment-notifications" >
+                        <div class="message-error">@Html.ValidationSummary(true)</div>
+                        @{
+                            var result = TempData["nop.news.addcomment.result"] as string;
+                        }
+                        @if (!String.IsNullOrEmpty(result))
+                        {
+                            <div class="alert alert-success square-box result">@result</div>
+                        }
+                    </div>
+                    @if (Model.Comments.Count > 0)
+                    {
+                        <div class="space15px">&nbsp;</div>
+                        <div class="fieldset">
+                            <div id="legend">
+                                <legend>@T("News.Comments")</legend>
+                            </div>
+                        
+                        </div>
+
+                        foreach (var comment in Model.Comments)
+                        {
+
+
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="blog-post-area">
+                                        <div class="single-blog-post">
+                                            <h3>@comment.CommentTitle</h3>
+                                            <div class="post-meta">
+                                                <ul>
+                                                    <li><i class="fa fa-user"></i>@(comment.CustomerName)</li>
+                                                    <li><i class="fa fa-clock-o"></i>  @Model.CreatedOn.ToString("T")</li>
+                                                    <li><i class="fa fa-calendar"></i>  @Model.CreatedOn.ToString("D")</li>
+                                                </ul>
+                                                            
+
+                                            </div>
+    
+                                            <p class="comment-text">@Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(comment.CommentText, false, true, false, false, false, false))</p>
+                                                        
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+                        }
+                    }
+                    @using (Html.BeginForm())
+                    {
+                        <div class="space15px">&nbsp;</div>
+                        <div class="fieldset">
+                            <div id="legend">
+                                <legend>@T("News.Comments.LeaveYourComment")</legend>
+                                
+                            </div>
+                            
+                        </div>
+
+                        <div class=" ">
+                            <div class="row">
+                                @Html.LabelFor(model => model.AddNewComment.CommentTitle, new { @class = "col-md-2"}, ":")
+                                <div class="col-sm-4" >                            
+                                    @Html.TextBoxFor(model => model.AddNewComment.CommentTitle, new { @class = "gray-input"})
+                                </div>
+                                <div class="col-md-offset-2 col-md-4">  
+                                    @Html.ValidationMessageFor(model => model.AddNewComment.CommentTitle)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="row">
+                                @Html.LabelFor(model => model.AddNewComment.CommentText, new { @class = "col-md-2"}, ":")
+                                <div class="col-md-8">    
+                                    @Html.TextAreaFor(model => model.AddNewComment.CommentText, new { @class = "gray-textarea",rows="10" })
+                                </div>
+                                <div class="col-md-offset-2 col-md-4"> 
+                                    @Html.ValidationMessageFor(model => model.AddNewComment.CommentText)
+                                </div>
+                            </div>
+                            @if (Model.AddNewComment.DisplayCaptcha)
+                            {
+                                <div class="captcha-box">
+                                    @Html.Raw(Html.GenerateCaptcha())
+                                </div>
+                            }
+                        </div>
+                        <div class="row">
+                            <div class="">
+                                <div class="pull-right col-md-3">
+                                    <input type="submit" name="add-comment" class="btn btn-primary" value="@T("News.Comments.SubmitButton")" />
+                                
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                
+            }
+            
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
