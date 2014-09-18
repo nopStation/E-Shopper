@@ -159,6 +159,20 @@
                     <div class="box-content feature-box">
                         @Model.PaymentMethod
                     </div>
+					       @if (!Model.PrintMode && Model.CanRePostProcessPayment)
+                        {
+                        @*Completing payment support (for redirection payment methods)*@
+                        <div class="repost">
+                            @using (Html.BeginRouteForm("OrderDetails", FormMethod.Post))
+                            {
+                                <input type="submit" name="repost-payment" value="@T("Order.RetryPayment")" class="button-1 re-order-button btn-primary" />
+                                <p class="hint">
+                                    <em>@T("Order.RetryPayment.Hint")</em>
+                                </p>
+                            }
+                        </div>
+                        }
+						
                     </div>
                     
                 }
