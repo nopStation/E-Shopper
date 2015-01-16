@@ -1,0 +1,54 @@
+﻿@model NewsItemListModel
+@using Nop.Web.Extensions;
+@using Nop.Web.Models.News;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.NewsArchive").Text);
+}
+
+<div class="blog-post-area">
+    <h2 class="title text-center">@T("News")    <a href="@Url.RouteUrl("NewsRSS", new { languageId = Model.WorkingLanguageId })" class="margin-orange header-rss" title="@T("News.RSS.Hint")"><i class="fa fa-rss header-rss-icon"></i></a></h2>
+    <div class="custom-page-box-div">
+        @{
+            var last = 0;
+        }
+        @foreach (var item in Model.NewsItems)
+        {
+            last++;
+            <div class="single-blog-post">
+                <h3><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">
+                        @item.Title</a></h3>
+                <div class="post-meta">
+                    <ul>
+                            
+                        <li><i class="fa fa-clock-o"></i> @item.CreatedOn.ToString("T")</li>
+                        <li><i class="fa fa-calendar"></i> @item.CreatedOn.ToString("D")</li>
+                    </ul>
+                        
+                </div>
+                    
+                <p>@Html.Raw(item.Short)</p>
+                <a  class="btn btn-primary" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@T("News.MoreInfo")</a>
+            </div>
+
+
+                
+            <br/>
+            if(last!=Model.NewsItems.Count)
+            {
+                <legend></legend>
+            }
+            
+
+        }
+        
+        <div class="pagination-area">
+                <div class="pagination">
+            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+        </div></div>
+
+    </div>
+</div>
+

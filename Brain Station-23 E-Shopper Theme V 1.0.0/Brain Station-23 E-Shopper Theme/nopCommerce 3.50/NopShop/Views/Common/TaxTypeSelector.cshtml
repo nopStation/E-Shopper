@@ -1,0 +1,48 @@
+﻿@model TaxTypeSelectorModel
+@using Nop.Core;
+@using Nop.Core.Domain.Tax;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Common;
+@{
+    var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+
+    var taxTypes = new List<SelectListItem>();
+    taxTypes.Add(new SelectListItem()
+    {
+        Text = T("Tax.Inclusive").Text,
+        Value = webHelper.ModifyQueryString(Url.RouteUrl("ChangeTaxType", new { customertaxtype = ((int)TaxDisplayType.IncludingTax) }), "returnurl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl), null),
+        Selected = Model.CurrentTaxType == TaxDisplayType.IncludingTax
+    });
+    taxTypes.Add(new SelectListItem()
+    {
+        Text = T("Tax.Exclusive").Text,
+        Value = webHelper.ModifyQueryString(Url.RouteUrl("ChangeTaxType", new { customertaxtype = ((int)TaxDisplayType.ExcludingTax) }), "returnurl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl), null),
+        Selected = Model.CurrentTaxType == TaxDisplayType.ExcludingTax
+    });
+    
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
+           @foreach(var just_taxTypes in taxTypes)
+            {
+                if(just_taxTypes.Selected==true)
+                {
+                    @just_taxTypes.Text
+                }
+            }
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            @foreach(var tax_types in taxTypes)
+            {
+                <li><a href="@tax_types.Value" >@tax_types.Text</a></li>
+            
+            }  
+        </ul>
+    </div>
+
+
+    
+
+
+
+}

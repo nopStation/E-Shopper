@@ -1,0 +1,224 @@
+﻿@model FooterModel
+@using Nop.Web.Extensions
+@using Nop.Web.Models.Common;
+@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+<footer id="footer"><!--Footer-->
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="companyinfo">
+                        <h2><span>e</span>-shopper</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <div class="col-sm-3">
+                        <div class="video-gallery text-center">
+                            <a href="#">
+                                <div class="iframe-img">
+                                    <img src="~/Themes/NopShop/Content/css/images/home/iframe1.png" alt="" />
+                                </div>
+                                <div class="overlay-icon">
+                                    <i class="fa fa-play-circle-o"></i>
+                                </div>
+                            </a>
+                            <p>Circle of Hands</p>
+                            <h2>24 DEC 2014</h2>
+                        </div>
+                    </div>
+						
+                    <div class="col-sm-3">
+                        <div class="video-gallery text-center">
+                            <a href="#">
+                                <div class="iframe-img">
+                                    <img src="~/Themes/NopShop/Content/css/images/home/iframe2.png" alt="" />
+                                </div>
+                                <div class="overlay-icon">
+                                    <i class="fa fa-play-circle-o"></i>
+                                </div>
+                            </a>
+                            <p>Circle of Hands</p>
+                            <h2>24 DEC 2014</h2>
+                        </div>
+                    </div>
+						
+                    <div class="col-sm-3">
+                        <div class="video-gallery text-center">
+                            <a href="#">
+                                <div class="iframe-img">
+                                    <img src="~/Themes/NopShop/Content/css/images/home/iframe3.png" alt="" />
+                                </div>
+                                <div class="overlay-icon">
+                                    <i class="fa fa-play-circle-o"></i>
+                                </div>
+                            </a>
+                            <p>Circle of Hands</p>
+                            <h2>24 DEC 2014</h2>
+                        </div>
+                    </div>
+						
+                    <div class="col-sm-3">
+                        <div class="video-gallery text-center">
+                            <a href="#">
+                                <div class="iframe-img">
+                                    <img src="~/Themes/NopShop/Content/css/images/home/iframe4.png" alt="" />
+                                </div>
+                                <div class="overlay-icon">
+                                    <i class="fa fa-play-circle-o"></i>
+                                </div>
+                            </a>
+                            <p>Circle of Hands</p>
+                            <h2>24 DEC 2014</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="address">
+                        <img src="~/Themes/NopShop/Content/css/images/home/map.png" alt="" />
+                        <p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+		
+    <div class="footer-widget">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="single-widget">
+                        <h2>@T("Footer.Information")</h2>
+                        <ul class="nav nav-pills nav-stacked">
+                            @if (Model.SitemapEnabled)
+                            {
+                                <li><a href="@Url.RouteUrl("Sitemap")">@T("Sitemap")</a></li>
+                            }
+                            <li><a href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("shippinginfo") })">@T("ShippingReturns")</a></li>
+                            <li><a href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("privacyinfo") })">@T("PrivacyNotice")</a></li>
+                            <li><a href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("conditionsofuse") })">@T("ConditionsOfUse")</a></li>
+                            <li><a href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("aboutus") })">@T("AboutUs")</a></li>
+                            <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="single-widget">
+                        <h2>@T("Footer.CustomerService")</h2>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a> </li>
+                            @if (Model.NewsEnabled)
+                            {
+                                <li><a href="@Url.RouteUrl("NewsArchive")">@T("News")</a></li>
+                            }
+                            @if (Model.BlogEnabled)
+                            {
+                                <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
+                            }
+                            @if (Model.ForumEnabled)
+                            {
+                                <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
+                            }
+                            @if (Model.RecentlyViewedProductsEnabled)
+                            {
+                                <li><a href="@Url.RouteUrl("RecentlyViewedProducts")">@T("Products.RecentlyViewedProducts")</a></li>
+                            }
+                            @if (Model.CompareProductsEnabled)
+                            {
+                                <li><a href="@Url.RouteUrl("CompareProducts")">@T("Products.Compare.List")</a></li>
+                            }
+                            @if (Model.RecentlyAddedProductsEnabled)
+                            {
+                                <li><a href="@Url.RouteUrl("RecentlyAddedProducts")">@T("Products.NewProducts")</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="single-widget">
+                        <h2>@T("Footer.MyAccount")</h2>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="@Url.RouteUrl("CustomerInfo")" class="account">@T("Account.MyAccount")</a></li>
+                            @if (!Model.HideOrders)
+                            {
+                                <li><a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a></li>
+                            }
+                            @if (!Model.HideAddresses)
+                            {
+                                <li><a href="@Url.RouteUrl("CustomerAddresses")" class="">@T("Account.CustomerAddresses")</a></li>
+                            }
+                            @if (Model.ShoppingCartEnabled)
+                            {
+                                <li><a href="@Url.RouteUrl("ShoppingCart")" class="ico-cart">@T("ShoppingCart")</a></li>
+                            }
+                            @if (Model.WishlistEnabled)
+                            {
+                                <li><a href="@Url.RouteUrl("Wishlist")" class="ico-wishlist">@T("Wishlist")</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+					
+                <div class="col-sm-3">
+                    @Html.Action("NewsletterBox", "Newsletter")
+                        
+                </div>
+					
+            </div>
+        </div>
+    </div>
+		
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-sm-4 text-left">
+                    Powered by <a href="http://www.nopcommerce.com/">nopCommerce</a>
+                    @*Would you like to remove the "Powered by nopCommerce" link in the bottom of the footer?
+                            Find more info here http://www.nopcommerce.com/copyrightremoval.aspx*@
+                
+                    
+                </div>
+                <div class="col-sm-4 text-center">
+                    @T("Content.CopyrightNotice", DateTime.Now.Year.ToString(), Model.StoreName)
+                </div>
+
+                <div class="col-sm-4 text-right">
+                    Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a> & <a target="_blank" href="http://www.brainstation-23.com">Brain Station-23</a></span>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+    @if (Model.DisplayTaxShippingInfoFooter)
+    {
+        var inclTax = EngineContext.Current.Resolve<IWorkContext>().TaxDisplayType == TaxDisplayType.IncludingTax;
+        <div class="footer-bottom text-center">
+            <div class="container">
+                @T(inclTax ? "Footer.TaxShipping.InclTax" : "Footer.TaxShipping.ExclTax", Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("shippinginfo")}))
+            </div>
+        </div>
+
+                        
+    }
+    
+
+    <div>
+        <div class="footer-bottom text-center">
+            @Html.Action("StoreThemeSelector", "Common")
+        </div>
+        
+
+    </div>
+ @Html.Widget("footer");
+</footer>
+<!--/Footer-->
+
+
+
+
+
+

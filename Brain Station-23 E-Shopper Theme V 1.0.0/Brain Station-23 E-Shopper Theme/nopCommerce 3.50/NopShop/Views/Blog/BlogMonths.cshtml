@@ -1,0 +1,52 @@
+﻿@model IList<BlogPostYearModel>
+@using Nop.Web.Models.Blogs;
+@if (Model.Count > 0)
+{
+
+
+    <div class="brands_products"><!--features_items-->
+        <h2>@T("Blog.Archive")</h2>
+       
+            <div class="panel-group category-products" id="accordian">
+               @foreach (var yearItem in Model)
+               {
+                   <div class="panel panel-default">
+                        
+                       <div class="panel-heading">
+                           <h4 class="panel-title">
+                               <a data-toggle="collapse" data-parent="#accordian" href="#blog-year-@(yearItem.Year)">
+                                   @(yearItem.Year)
+                                   <span class="pull-right"><i class="fa fa-plus"></i></span>
+
+                
+                                  
+                               </a>
+                           </h4>
+                       </div>
+
+                       <div id="blog-year-@(yearItem.Year)" class="panel-collapse collapse in">
+                           <div class="panel-body">
+                               <ul>
+                                    @foreach (var monthItem in yearItem.Months)
+                            {
+                                       <li><a href="@Url.RouteUrl("BlogByMonth", new { month = yearItem.Year + "-" + monthItem.Month })">@(new DateTime(yearItem.Year, monthItem.Month, 1).ToString("MMMM"))
+                                                            <span class="pull-right">(@(monthItem.BlogPostCount))</span></a></li>
+
+
+                                   }
+                                
+                                
+                               </ul>
+                           </div>
+                       </div>
+
+                   </div>
+               }
+        
+            </div>
+
+        </div>
+   
+
+    
+}

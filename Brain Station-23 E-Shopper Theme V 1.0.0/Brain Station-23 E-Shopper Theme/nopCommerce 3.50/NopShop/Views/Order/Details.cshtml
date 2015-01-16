@@ -1,0 +1,699 @@
+﻿@model OrderDetailsModel
+@using Nop.Web.Models.Order;
+@{
+    if (!Model.PrintMode)
+    {
+        Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Print.cshtml";
+    }
+    //title
+    Html.AddTitleParts(T("PageTitle.OrderDetails").Text);
+}
+@if (Model.PrintMode)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.print();
+        });
+    </script>
+}
+
+<div class="container">
+    <h2 class="title text-center">@T("Order.OrderInformation")</h2>
+    <div class="custom-page-box-div">
+        <div class="row">
+            <div class="col-sm-12 pull-right">
+                @if (!Model.PrintMode)
+                {
+                    <span>
+                        <a href="@Url.RouteUrl("PrintOrderDetails", new {orderId = Model.Id})" target="_blank" class="btn btn-primary ">@T("Order.Print")</a>
+                    </span>
+              
+                    <span>
+                        <a href="@Url.RouteUrl("GetOrderPdfInvoice", new {orderId = Model.Id})" class="btn btn-primary ">@T("Order.GetPDFInvoice")</a>
+                    </span>
+                }
+       
+            </div>
+        </div>
+<div class="space15px"></div>
+        <div class="row">
+            
+            <div class="col-lg-12 cart-box-wr">
+
+                <div class="custom-footer-cart-div">
+    
+                    <div class="hint">
+                        <div >
+                            @T("Order.OrderDate"): @Model.CreatedOn.ToString("D")
+                            
+                        </div>
+                        <div>
+                            @T("Order.OrderStatus"): @Model.OrderStatus
+                        </div>
+
+                        <div >
+                            @T("Order.OrderTotal"): <strong>@Model.OrderTotal</strong>
+                        </div>
+
+
+                    </div>
+              
+                </div>
+
+                    
+            </div>
+  
+            
+        </div>
+        <br/>
+
+
+        <div class="row">
+            <div class="col-lg-6 box-block">
+                <div class="custom-footer-cart-div">
+                    <div class="box-heading">
+                        <strong>@T("Order.BillingAddress")</strong>
+                    </div>
+            
+
+                    <div class="box-content feature-box">
+                        <div class="name">
+                            @Model.BillingAddress.FirstName @Model.BillingAddress.LastName
+                        </div>
+                        <div class="">
+                            @T("Order.Email"): @Model.BillingAddress.Email
+                        </div>
+                        @if (Model.BillingAddress.PhoneEnabled)
+                        {
+                            <div class="phone">
+                                @T("Order.Phone"): @Model.BillingAddress.PhoneNumber
+                            </div>
+                        }
+                        @if (Model.BillingAddress.FaxEnabled)
+                        {
+                            <div class="fax">
+                                @T("Order.Fax"): @Model.BillingAddress.FaxNumber
+                            </div>
+                        }
+                        @if (Model.BillingAddress.CompanyEnabled && !String.IsNullOrEmpty(Model.BillingAddress.Company))
+                        {
+                            <div class="company">
+                                @Model.BillingAddress.Company
+                            </div>
+                        }
+                        @if (Model.BillingAddress.StreetAddressEnabled)
+                        {
+                            <div class="address1">
+                                @Model.BillingAddress.Address1
+                            </div>
+                        }
+                        @if (Model.BillingAddress.StreetAddress2Enabled && !String.IsNullOrEmpty(Model.BillingAddress.Address2))
+                        {
+                            <div class="address2">
+                                @Model.BillingAddress.Address2
+                            </div>
+                        }
+                        @if (Model.BillingAddress.CityEnabled ||
+                             Model.BillingAddress.StateProvinceEnabled ||
+                             Model.BillingAddress.ZipPostalCodeEnabled)
+                        {
+                            <div class="city-state-zip">
+                                @if (Model.BillingAddress.CityEnabled)
+                                {
+                                    @Model.BillingAddress.City
+                                }
+                                @if (Model.BillingAddress.CityEnabled && (Model.BillingAddress.StateProvinceEnabled || Model.BillingAddress.ZipPostalCodeEnabled))
+                                {
+                                    <text>,</text>
+                                }
+                                @if (Model.BillingAddress.StateProvinceEnabled)
+                                {
+                                    @Model.BillingAddress.StateProvinceName
+                                }
+                                @if (Model.BillingAddress.ZipPostalCodeEnabled)
+                                {
+                                    @Model.BillingAddress.ZipPostalCode
+                                }
+                            </div>
+                        }
+                        @if (Model.BillingAddress.CountryEnabled && !String.IsNullOrEmpty(Model.BillingAddress.CountryName))
+                        {
+                            <div class="country">
+                                @Model.BillingAddress.CountryName
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <br/>
+
+                @if (!String.IsNullOrEmpty(Model.PaymentMethod))
+                {   <div class="custom-footer-cart-div">
+                        <div class="box-heading">
+                        <strong>@T("Order.PaymentMethod")</strong>
+                    </div>
+                    <div class="box-content feature-box">
+                        @Model.PaymentMethod
+                    </div>
+					       @if (!Model.PrintMode && Model.CanRePostProcessPayment)
+                        {
+                        @*Completing payment support (for redirection payment methods)*@
+                        <div class="repost">
+                            @using (Html.BeginRouteForm("OrderDetails", FormMethod.Post))
+                            {
+                                <input type="submit" name="repost-payment" value="@T("Order.RetryPayment")" class="button-1 re-order-button btn-primary" />
+                                <p class="hint">
+                                    <em>@T("Order.RetryPayment.Hint")</em>
+                                </p>
+                            }
+                        </div>
+                        }
+						
+                    </div>
+                    
+                }
+            </div>
+        
+
+            @if (Model.IsShippable)
+            {
+                <div class="col-lg-6 box-block">
+                    <div class="custom-footer-cart-div">
+                        
+                    
+                        <div class="box-heading">
+                            <strong>
+                                @T("Order.ShippingAddress")</strong>
+                        </div>
+                
+
+                        <div class="box-content feature-box">
+                            <div class="name">
+                                @Model.ShippingAddress.FirstName @Model.ShippingAddress.LastName
+                            </div>
+                            <div class="">
+                                @T("Order.Email"): @Model.ShippingAddress.Email
+                            </div>
+                            @if (Model.ShippingAddress.PhoneEnabled)
+                            {
+                                <div class="phone">
+                                    @T("Order.Phone"): @Model.ShippingAddress.PhoneNumber
+                                </div>
+                            }
+                            @if (Model.ShippingAddress.FaxEnabled)
+                            {
+                                <div class="fax">
+                                    @T("Order.Fax"): @Model.ShippingAddress.FaxNumber
+                                </div>
+                            }
+                            @if (Model.ShippingAddress.CompanyEnabled && !String.IsNullOrEmpty(Model.ShippingAddress.Company))
+                            {
+                                <div class="company">
+                                    @Model.ShippingAddress.Company
+                                </div>
+                            }
+                            @if (Model.ShippingAddress.StreetAddressEnabled)
+                            {
+                                <div class="address1">
+                                    @Model.ShippingAddress.Address1
+                                </div>
+                            }
+                            @if (Model.ShippingAddress.StreetAddress2Enabled && !String.IsNullOrEmpty(Model.ShippingAddress.Address2))
+                            {
+                                <div class="address2">
+                                    @Model.ShippingAddress.Address2
+                                </div>
+                            }
+                            @if (Model.ShippingAddress.CityEnabled ||
+                                 Model.ShippingAddress.StateProvinceEnabled ||
+                                 Model.ShippingAddress.ZipPostalCodeEnabled)
+                            {
+                                <div class="city-state-zip">
+                                    @if (Model.ShippingAddress.CityEnabled)
+                                    {
+                                        @Model.ShippingAddress.City
+                                    }
+                                    @if (Model.ShippingAddress.CityEnabled && (Model.ShippingAddress.StateProvinceEnabled || Model.ShippingAddress.ZipPostalCodeEnabled))
+                                    {
+                                        <text>,</text>
+                                    }
+                                    @if (Model.ShippingAddress.StateProvinceEnabled)
+                                    {
+                                        @Model.ShippingAddress.StateProvinceName
+                                    }
+                                    @if (Model.ShippingAddress.ZipPostalCodeEnabled)
+                                    {
+                                        @Model.ShippingAddress.ZipPostalCode
+                                    }
+                                </div>
+                            }
+
+                            @if (Model.ShippingAddress.CountryEnabled && !String.IsNullOrEmpty(Model.ShippingAddress.CountryName))
+                            {
+                                <div class="country">
+                                    @Model.ShippingAddress.CountryName
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <br/>
+                    <div class="custom-footer-cart-div">
+                        <div class="box-heading">
+                            <strong>@T("Order.ShippingMethod")</strong>
+                        </div>
+                
+
+                        <div class="box-content feature-box">
+                            @Model.ShippingMethod
+                        </div>
+                    </div>
+
+                </div>
+            
+
+            }
+        </div>
+        <br/>
+
+        
+        @if (Model.Items.Count > 0)
+        {
+            <div>
+                <div class="fieldset">
+                    <div id="legend">
+                        <legend>@T("Order.Product(s)")</legend>
+                    </div>
+                    
+                </div>
+
+                <div id="cart_items">
+    
+
+                    <div class="table-responsive cart_info">
+                        <table class="table table-condensed custom-shopping-cart-page">
+                            <thead>
+                                <tr class="cart_menu">
+                                    @if (Model.ShowSku)
+                                {
+                                    <td class="tbl">
+                                        @T("Order.Product(s).SKU")
+                                    </td>
+                                }
+                                <td class="tbl">
+                                    @T("Order.Product(s).Name")
+                                </td>
+                                <td class="tbl">
+                                    @T("Order.Product(s).Price")
+                                </td>
+                                <td class="tbl">
+                                    @T("Order.Product(s).Quantity")
+                                </td>
+                                <td class="tbl">
+                                    @T("Order.Product(s).Total")
+                                </td>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                 @foreach (var item in Model.Items)
+                            {
+                                <tr class="border-row">
+                                    @if (Model.ShowSku)
+                                    {
+                                        <td class="a-left sku">
+                                            @item.Sku
+                                        </td>
+                                    }
+                                    <td class="a-left name">
+                                        @if (!Model.PrintMode)
+                                        {
+                                            <em><a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })">@item.ProductName</a></em>
+                                        }
+                                        else
+                                        {
+                                            @item.ProductName
+                                        }
+                                        @if (!String.IsNullOrEmpty(item.AttributeInfo))
+                                        {
+                                            <div class="attributes">
+                                                @Html.Raw(item.AttributeInfo)
+                                            </div>
+                                        }
+                                    </td>
+                                    <td class="a-right price">
+                                        @item.UnitPrice
+                                    </td>
+                                    <td class="a-center quantity">
+                                        @item.Quantity
+                                    </td>
+                                    <td class="a-right total">
+                                        @item.SubTotal
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+
+
+
+
+                
+                @if (!String.IsNullOrEmpty(Model.CheckoutAttributeInfo))
+                {
+                    <div class="custom-footer-cart-div">
+                        <div class="checkout-attributes">
+                            @Html.Raw(Model.CheckoutAttributeInfo)
+                        </div>
+                    
+                    </div>
+                    <div class="space15px"></div>
+
+                    
+
+                }
+                @if (!Model.PrintMode)
+                {<div class="custom-footer-cart-div">
+                     <div class="actions">
+                         @if (Model.IsReOrderAllowed)
+                         {
+                             <input type="button" value="@T("Order.Reorder")" class="btn btn-primary" onclick="setLocation('@Url.RouteUrl("ReOrder", new { orderId = Model.Id })    ')" />
+                         }
+                         @if (Model.IsReturnRequestAllowed)
+                         {
+                             <input type="button" value="@T("Order.ReturnItems")" class="btn btn-primary" onclick="setLocation('@Url.RouteUrl("ReturnRequest", new { orderId = Model.Id })    ')" />
+                         }
+                     </div>
+                 </div>
+                    <div class="space15px"></div>
+
+                    
+                }
+            </div>
+            <br/>
+
+        }
+        @Html.Widget("orderdetails_page_afterproducts")
+
+
+
+
+        <div class="row">
+            <div class="col-lg-4 pull-right ">
+               
+                <div class="total_area">
+                    <ul>
+                        <li>@T("Order.SubTotal"): <span>@Model.OrderSubtotal</span></li>
+                        @if (!string.IsNullOrEmpty(Model.OrderSubTotalDiscount))
+                        {
+                            <li>
+                                    
+                                @T("Order.SubTotalDiscount"):
+                                       
+                                <span >
+                                    @Model.OrderSubTotalDiscount
+                                </span>
+                                    
+                            </li>
+                        }
+                        @if (Model.IsShippable)
+                        {
+                            <li >
+                                   
+                                @T("Order.Shipping"):
+                                        
+                                    
+                                <span >
+                                    @Model.OrderShipping
+                                </span>
+                                    
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.PaymentMethodAdditionalFee))
+                        {
+                            <li >
+                                   
+                                @T("Order.PaymentMethodAdditionalFee"):
+                                        
+                                   
+                                <span >
+                                    @Model.PaymentMethodAdditionalFee
+                                </span>
+                                    
+                            </li>
+                        }
+                        @if (Model.DisplayTaxRates && Model.TaxRates.Count > 0)
+                        {
+                            foreach (var taxRate in Model.TaxRates)
+                            {
+                                <li>
+                                       
+                                    @string.Format(T("Order.TaxRateLine").Text, taxRate.Rate):
+                                            
+                                        
+                                    <span >
+                                        @taxRate.Value
+                                    </span>
+                                       
+                                </li>
+                            }
+                        }
+                        @if (Model.DisplayTax)
+                        {
+                            <li >
+                                    
+                                @T("Order.Tax"):
+                                       
+                                   
+                                <span >
+                                    @Model.Tax
+                                </span>
+                                    
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.OrderTotalDiscount))
+                        {
+                            <li>
+                                    
+                                @T("Order.TotalDiscount"):
+                                      
+                                    
+                                <span >
+                                    @Model.OrderTotalDiscount
+                                </span>
+                                    
+                            </li>
+                        }
+                        @if (Model.GiftCards.Count > 0)
+                        {
+                            foreach (var gc in Model.GiftCards)
+                            {
+                                <li >
+                                       
+                                    @string.Format(T("Order.GiftCardInfo").Text, gc.CouponCode):
+                                           
+                                       
+                                    <span >
+                                        @gc.Amount
+                                    </span>
+                                       
+                                </li>
+                            }
+                        }
+                        @if (Model.RedeemedRewardPoints > 0)
+                        {
+                            <li >
+                                    
+                                @string.Format(T("Order.RewardPoints").Text, Model.RedeemedRewardPoints):
+                                       
+                                    
+                                <span ><strong>
+                                           @Model.RedeemedRewardPointsAmount</strong>
+                                </span>
+                                    
+                            </li>
+                        }
+                        <li >
+                              
+                            @T("Order.OrderTotal"):
+                                    
+                                
+                            <span ><strong>
+                                       @Model.OrderTotal</strong>
+                            </span>
+                                
+                        </li>
+                    </ul>
+    
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+        @if (!Model.PrintMode)
+        {
+            if (Model.Shipments.Count > 0)
+            {
+                <div class="section shipments">
+                    <div class="fieldset">
+                        <div id="legend">
+                            <legend>@T("Order.Shipments")</legend>
+                            
+                        </div>
+                        
+                    </div>
+
+
+                    <div id="cart_items">
+    
+
+                        <div class="table-responsive cart_info">
+                            <table class="table table-condensed custom-shopping-cart-page">
+                                <thead>
+                                    <tr class="cart_menu">
+                                        <td class="a-center id">
+                                            @T("Order.Shipments.ID")
+                                        </td>
+                                        <td class="a-center tracking-number">
+                                            @T("Order.Shipments.TrackingNumber")
+                                        </td>
+                                        <td class="a-center shipped-date">
+                                            @T("Order.Shipments.ShippedDate")
+                                        </td>
+                                        <td class="a-center delivery-date">
+                                            @T("Order.Shipments.DeliveryDate")
+                                        </td>
+                                        <td class="a-center details">
+                                            @T("Order.Shipments.ViewDetails")
+                                        </td>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Shipments)
+                                    {
+                                        <tr>
+                                            <td class="a-left id">
+                                                @item.Id.ToString()
+                                            </td>
+                                            <td class="a-left tracking-number">
+                                                @item.TrackingNumber
+                                            </td>
+                                            <td class="a-left shipped-date">
+                                                @if (item.ShippedDate.HasValue)
+                                                {
+                                                    @item.ShippedDate.Value.ToString("D")
+                                                }
+                                                else
+                                                {
+                                                    @T("Order.Shipments.ShippedDate.NotYet")
+                                                }
+                                            </td>
+                                            <td class="a-left delivery-date">
+                                                @if (item.DeliveryDate.HasValue)
+                                                {
+                                                    @item.DeliveryDate.Value.ToString("D")
+                                                }
+                                                else
+                                                {
+                                                    @T("Order.Shipments.DeliveryDate.NotYet")
+                                                }
+                                            </td>
+                                            <td class="a-center details">
+                                                <a href="@Url.RouteUrl("ShipmentDetails", new {shipmentId = item.Id})" title="@T("Order.Shipments.ViewDetails")">@T("Order.Shipments.ViewDetails")</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+
+                    
+                </div>
+            }
+        }
+        @if (!Model.PrintMode)
+        {
+            if (Model.OrderNotes.Count > 0)
+            {
+
+
+                <div class="section order-notes">
+                    <div class="fieldset">
+                        <div id="legend">
+                            <legend>@T("Order.Notes")</legend>
+                            
+                        </div>
+                        
+                    </div>
+
+
+
+
+                    <div id="cart_items">
+    
+
+                        <div class="table-responsive cart_info">
+                            <table class="table table-condensed custom-shopping-cart-page">
+                                <thead>
+                                    <tr class="cart_menu">
+                                        <td class="a-center createdon">
+                                            @T("Order.Notes.CreatedOn")
+                                        </td>
+                                        <td class="a-center note">
+                                            @T("Order.Notes.Note")
+                                        </td>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderNotes)
+                                    {
+                                        <tr>
+                                            <td class="a-left createdon">
+                                                @item.CreatedOn.ToString()
+                                            </td>
+                                            <td class="a-left note">
+                                                @Html.Raw(item.Note)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    
+                </div>
+            }
+        }
+
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,61 @@
+﻿@model ForumGroupModel
+@using Nop.Web.Models.Boards;
+<div class="@*forums-table-section-title*@ title mid-content-title">
+    <h4><strong> @Html.RouteLink(Model.Name, "ForumGroupSlug", new { id = Model.Id, slug = Model.SeName })</strong></h4>
+</div>
+
+<div id="cart_items">
+    
+
+    <div class="table-responsive cart_info">
+        <table class="table table-condensed">
+            <thead>
+                <tr class="cart_menu">
+                    <td class="forum-name" colspan="2">
+                        @T("Forum.Forum")
+                    </td>
+                    <td class="topics text-center">
+                        @T("Forum.Topics")
+                    </td>
+                    <td class="posts text-center">
+                        @T("Forum.Posts")
+                    </td>
+                    <td class="last-post text-center">
+                        @T("Forum.LatestPost")
+                    </td>
+
+                
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var forum in Model.Forums)
+                {
+                    <tr>
+                        <td class="folder-icon text-center" >
+                            <i class="fa fa-folder-open-o fa-2x"></i>
+                        </td>
+                        <td class="forum-name">
+                            <div class="forum-title">
+                                <strong> @Html.RouteLink(forum.Name, "ForumSlug", new { id = forum.Id, slug = forum.SeName })</strong>
+                            </div>
+                            <div class="forum-description">@forum.Description
+                            </div>
+                        </td>
+                        <td class="topics text-center">@forum.NumTopics
+                        </td>
+                        <td class="posts text-center">@forum.NumPosts
+                        </td>
+                        <td class="last-post text-center">
+                            @Html.Action("LastPost", new { forumPostId = forum.LastPostId, showTopic = true })
+                        </td>
+                    </tr>            
+                }
+            
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+

@@ -1,0 +1,67 @@
+﻿@model IList<ProductOverviewModel>
+
+@using Nop.Web.Models.Catalog;
+@if (Model.Count > 0)
+{
+   
+
+
+
+
+
+var nnn_i = 0;
+    <div class="recommended_items"><!--recommended_items-->
+        <h2 class="title text-center">@T("Products.RelatedProducts")</h2>
+						
+        <div id="recommended-item-carousel-y" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @foreach (var item in Model)
+                {
+                    if(nnn_i%3==0)
+                    {
+                        if(nnn_i==0)
+                        {
+                            @:<div class="item active">
+                            @:<div class="row" >    
+                        }else
+                        {
+                            @:<div class="item">
+                                @:<div class="row" >  
+                        }
+                        
+
+                            
+
+                    }
+                    <div class="col-lg-4">
+                        <div class="offer offer-default silde-show-offer pull-text-center">
+                            @Html.Partial("_ProductBox", item)
+                        </div>
+
+                    </div>
+
+
+                    if(nnn_i%3==2)
+                    {
+                        @:</div> 
+                        @:</div> 
+                    }
+                    nnn_i++;
+                }
+                @if(nnn_i%3!=0)
+                {
+                    @:</div> 
+                    @:</div> 
+                }
+                
+            </div>
+            <a class="left recommended-item-control" href="#recommended-item-carousel-y" data-slide="prev">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            <a class="right recommended-item-control" href="#recommended-item-carousel-y" data-slide="next">
+                <i class="fa fa-angle-right"></i>
+            </a>			
+        </div>
+    </div>
+
+}
